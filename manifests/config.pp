@@ -40,17 +40,9 @@ class nginx::config inherits nginx::params {
   }
 
   file { "${nginx::config::nx_conf_dir}/conf":
-    ensure => directory,
-  }
-
-  file { "${nginx::config::nx_conf_dir}/conf/":
-    source  => 'puppet:///modules/nginx/conf/',
+    source  => 'puppet:///modules/nginx/conf',
     ensure  => directory,
     recurse => true,
-  }
-
-  file { '/etc/ssh/ssh_config':
-    source  => 'puppet:///modules/openssh/ssh_config',
   }
 
   file { "${nginx::params::nx_conf_dir}/nginx.conf":
