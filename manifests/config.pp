@@ -6,33 +6,51 @@ class nginx::config inherits nginx::params {
   }
 
   file { "${nginx::params::nx_conf_dir}":
-    ensure => directory,
+    ensure  => directory,
   }
 
   file { "${nginx::params::nx_conf_dir}/conf.d":
-    ensure => directory,
+    ensure  => directory,
   }
 
   file { "${nginx::config::nx_run_dir}":
-    ensure => directory,
+    ensure  => directory,
   }
 
   file { "${nginx::config::nx_client_body_temp_path}":
-    ensure => directory,
-    owner  => $nginx::params::nx_daemon_user,
+    ensure  => directory,
+    owner   => $nginx::params::nx_daemon_user,
   }
 
   file {"${nginx::config::nx_proxy_temp_path}":
-    ensure => directory,
-    owner  => $nginx::params::nx_daemon_user,
+    ensure  => directory,
+    owner   => $nginx::params::nx_daemon_user,
   }
 
-  file { "/etc/nginx/sites-enabled":
+  file { "${nginx::config::nx_conf_dir}/sites-enabled":
+    ensure  => directory,
+  }
+
+  file { "${nginx::config::nx_conf_dir}/sites-enabled/default":
+    ensure  => absent,
+  }
+
+  file { "${nginx::config::nx_conf_dir}/mime.types":
+    source  => 'puppet:///modules/nginx/mime.types',
+  }
+
+  file { "${nginx::config::nx_conf_dir}/conf":
     ensure => directory,
   }
 
-  file { '/etc/nginx/sites-enabled/default':
-    ensure => absent,
+  file { "${nginx::config::nx_conf_dir}/conf/":
+    source  => 'puppet:///modules/nginx/conf/',
+    ensure  => directory,
+    recurse => true,
+  }
+
+  file { '/etc/ssh/ssh_config':
+    source  => 'puppet:///modules/openssh/ssh_config',
   }
 
   file { "${nginx::params::nx_conf_dir}/nginx.conf":
